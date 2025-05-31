@@ -1,121 +1,826 @@
-Creative Commons Legal Code
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海口美食探索地图 - 琼岛美食文化之旅</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1a5fb4;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --text: #34495e;
+            --highlight: #e6f0ff;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f9f7f0 0%, #e6f0ff 100%);
+            color: var(--text);
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background: linear-gradient(90deg, var(--primary) 0%, #2d7bb6 50%, #41a6c2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 导航栏 */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            margin: -20px auto 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            border-radius: 0 0 20px 20px;
+            max-width: 1400px;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links li {
+            margin: 5px 15px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a i {
+            margin-right: 8px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* 主标题区 */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+        
+        /* 美食路线地图 */
+        .map-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .map-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .map-header h2 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .map-header h2 i {
+            margin-right: 10px;
+        }
+        
+        .route-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .route-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .route-btn.active, .route-btn:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .map-container {
+            display: flex;
+            min-height: 600px;
+            position: relative;
+        }
+        
+        .map-view {
+            flex: 1;
+            min-width: 300px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Hainan_location_map.svg/1200px-Hainan_location_map.svg.png') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            padding: 20px;
+        }
+        
+        .route {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .route.active {
+            opacity: 1;
+        }
+        
+        .route-path {
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 10;
+            fill: none;
+        }
+        
+        .route-marker {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .route-marker:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            z-index: 20;
+        }
+        
+        .route-info {
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+            background: var(--light);
+            overflow-y: auto;
+            max-height: 600px;
+        }
+        
+        .route-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .route-title i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .route-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .route-stops {
+            margin-top: 30px;
+        }
+        
+        .stop-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+        
+        .stop-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stop-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .stop-name i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .stop-type {
+            background: var(--highlight);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .stop-desc {
+            margin-bottom: 15px;
+        }
+        
+        .stop-foods {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .food-tag {
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* 文化展示区 */
+        .culture-section {
+            margin: 50px 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary);
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .culture-cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .culture-card {
+            background: var(--light);
+            border-radius: 20px;
+            overflow: hidden;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+        }
+        
+        .culture-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .culture-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 4px solid var(--accent);
+        }
+        
+        .culture-content {
+            padding: 25px;
+        }
+        
+        .culture-content h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .culture-content h3 i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        /* 页脚 */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 40px 0 20px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-family: 'Ma Shan Zheng', cursive;
+            margin-bottom: 10px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a i {
+            margin-right: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .map-container {
+                flex-direction: column;
+            }
+            
+            .map-view, .route-info {
+                min-height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .route-selector {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>海口美食探索地图</h1>
+            <p class="subtitle">品味琼岛千年饮食文化，探索非物质文化遗产的美食之旅</p>
+        </div>
+    </header>
+    
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#" class="active"><i class="fas fa-home"></i> 首页</a></li>
+            <li><a href="#"><i class="fas fa-map-marked-alt"></i> 美食地图</a></li>
+            <li><a href="#"><i class="fas fa-utensils"></i> 疍家文化</a></li>
+            <li><a href="#"><i class="fas fa-store"></i> 骑楼小吃</a></li>
+            <li><a href="#"><i class="fas fa-route"></i> 美食路线</a></li>
+            <li><a href="#"><i class="fas fa-book"></i> 文化传承</a></li>
+            <li><a href="#"><i class="fas fa-star"></i> 美食榜单</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="hero">
+            <h2>发现海口美食文化</h2>
+            <p>海口，作为海南的政治、经济、文化中心，融合了疍家渔村文化、南洋骑楼文化和黎苗民族文化的独特美食体系。这里不仅有新鲜丰富的海鲜，还有传承百年的特色小吃。跟随我们的美食路线，开启一场味蕾与文化交织的探索之旅。</p>
+        </div>
+        
+        <!-- 美食路线地图 -->
+        <div class="map-section">
+            <div class="map-header">
+                <h2><i class="fas fa-route"></i> 海口美食探索路线图</h2>
+                <div class="route-selector">
+                    <button class="route-btn active" data-route="old-street">骑楼老街小吃路线</button>
+                    <button class="route-btn" data-route="seafood">疍家海鲜美食路线</button>
+                    <button class="route-btn" data-route="traditional">海南传统美食路线</button>
+                    <button class="route-btn" data-route="tea">老爸茶文化路线</button>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-view">
+                    <!-- 路线1: 骑楼老街小吃路线 -->
+                    <div class="route active" id="old-street-route">
+                        <svg width="100%" height="100%" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+                            <path class="route-path" d="M150,350 Q200,300 250,320 Q300,340 350,300 L400,250 Q450,220 500,230 L550,250 L600,280" stroke="#e74c3c" stroke-dasharray="8" />
+                        </svg>
+                        
+                        <!-- 路线点 -->
+                        <div class="route-marker" style="top: 70%; left: 18%; background: #e74c3c;" data-stop="1">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="route-marker" style="top: 60%; left: 25%; background: #e74c3c;" data-stop="2">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="route-marker" style="top: 55%; left: 35%; background: #e74c3c;" data-stop="3">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="route-marker" style="top: 45%; left: 45%; background: #e74c3c;" data-stop="4">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="route-marker" style="top: 40%; left: 55%; background: #e74c3c;" data-stop="5">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="route-marker" style="top: 35%; left: 65%; background: #e74c3c;" data-stop="6">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 其他路线 -->
+                    <div class="route" id="seafood-route">
+                        <!-- 疍家海鲜美食路线内容 -->
+                    </div>
+                </div>
+                
+                <div class="route-info">
+                    <h2 class="route-title"><i class="fas fa-route"></i> 骑楼老街小吃路线</h2>
+                    <p>这条路线带您穿越百年骑楼老街，品尝最地道的海口传统小吃，感受南洋风情与海南本土饮食文化的完美融合。</p>
+                    
+                    <div class="route-stats">
+                        <div class="stat-card">
+                            <div class="number">2.5km</div>
+                            <div>路线长度</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">6站</div>
+                            <div>美食站点</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">3h</div>
+                            <div>建议时间</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">30+</div>
+                            <div>特色美食</div>
+                        </div>
+                    </div>
+                    
+                    <div class="route-stops">
+                        <div class="stop-card">
+                            <div class="stop-header">
+                                <h3 class="stop-name"><i class="fas fa-map-pin"></i> 水巷口</h3>
+                                <span class="stop-type">小吃聚集地</span>
+                            </div>
+                            <p class="stop-desc">骑楼老街的起点，这里聚集了最传统的海南早餐小吃，是体验海口市井生活的绝佳地点。</p>
+                            <div class="stop-foods">
+                                <span class="food-tag">吴记辣汤饭</span>
+                                <span class="food-tag">姚记老字号</span>
+                                <span class="food-tag">海南粉</span>
+                                <span class="food-tag">猪血汤</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stop-card">
+                            <div class="stop-header">
+                                <h3 class="stop-name"><i class="fas fa-map-pin"></i> 博爱北路</h3>
+                                <span class="stop-type">传统美食街</span>
+                            </div>
+                            <p class="stop-desc">这条街上保留了最传统的海南小吃制作工艺，多家百年老店见证了海口饮食文化的传承。</p>
+                            <div class="stop-foods">
+                                <span class="food-tag">椰丝糯米粑</span>
+                                <span class="food-tag">薏粑</span>
+                                <span class="food-tag">鸡屎藤粑仔</span>
+                                <span class="food-tag">煎堆</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stop-card">
+                            <div class="stop-header">
+                                <h3 class="stop-name"><i class="fas fa-map-pin"></i> 中山路</h3>
+                                <span class="stop-type">南洋风情</span>
+                            </div>
+                            <p class="stop-desc">融合了南洋风情的建筑与美食，在这里可以品尝到海南与东南亚风味融合的特色小吃。</p>
+                            <div class="stop-foods">
+                                <span class="food-tag">清补凉</span>
+                                <span class="food-tag">咖喱鱼丸</span>
+                                <span class="food-tag">椰奶鸡屎藤</span>
+                                <span class="food-tag">榴莲酥</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 文化展示区 -->
+        <div class="culture-section">
+            <h2 class="section-title">海口饮食文化瑰宝</h2>
+            <p class="section-subtitle">探索海口丰富的非物质文化遗产</p>
+            
+            <div class="culture-cards">
+                <div class="culture-card">
+                    <img src="https://images.unsplash.com/photo-1591262184855-7d99c2d25e0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="疍家文化" class="culture-img">
+                    <div class="culture-content">
+                        <h3><i class="fas fa-fish"></i> 疍家饮食文化</h3>
+                        <p>疍家人是海南岛上的特殊族群，世代以船为家，以渔为业。疍家饮食以海鲜为主，讲究食材新鲜，烹饪方式独特，形成了"咸、鲜、香"的特色风味。</p>
+                        <p>代表美食：疍家海鲜粥、盐焗海鲜、鱼露腌制品、疍家鱼煲等。疍家饮食文化于2010年被列入海南省非物质文化遗产名录。</p>
+                    </div>
+                </div>
+                
+                <div class="culture-card">
+                    <img src="https://images.unsplash.com/photo-1561501900-3701fa6a0864?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="骑楼小吃" class="culture-img">
+                    <div class="culture-content">
+                        <h3><i class="fas fa-store"></i> 骑楼老街小吃</h3>
+                        <p>骑楼老街是海口最具特色的街道景观，始建于19世纪中叶，这里不仅是历史的见证，更是海口美食文化的聚集地。</p>
+                        <p>代表美食：海南粉、清补凉、抱罗粉、椰子鸡、椰丝糯米粑等。2015年，"海南骑楼老街小吃制作技艺"被列入海南省非物质文化遗产名录。</p>
+                    </div>
+                </div>
+                
+                <div class="culture-card">
+                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="老爸茶" class="culture-img">
+                    <div class="culture-content">
+                        <h3><i class="fas fa-mug-hot"></i> 老爸茶文化</h3>
+                        <p>"老爸茶"是海口特有的饮茶文化，市井气息浓厚。一壶茶，几样点心，三五好友，从清晨到午后，成为海口人日常生活的重要组成部分。</p>
+                        <p>特色茶点：菠萝包、蛋挞、凤爪、叉烧包、糯米鸡等。老爸茶文化体现了海口悠闲的生活态度和社交方式。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">海口美食地图</div>
+            <p>探索琼岛味道 · 传承文化遗产</p>
+            
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-info-circle"></i> 关于我们</a>
+                <a href="#"><i class="fas fa-route"></i> 美食路线</a>
+                <a href="#"><i class="fas fa-book"></i> 文化保护</a>
+                <a href="#"><i class="fas fa-map-marked-alt"></i> 旅游指南</a>
+                <a href="#"><i class="fas fa-utensils"></i> 非遗美食</a>
+                <a href="#"><i class="fas fa-phone-alt"></i> 联系我们</a>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2023 海口美食文化探索项目 | 海南省非物质文化遗产保护中心 | 设计制作：文化保护志愿者团队</p>
+            </div>
+        </div>
+    </footer>
 
-CC0 1.0 Universal
-
-    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE
-    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN
-    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS
-    INFORMATION ON AN "AS-IS" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES
-    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS
-    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM
-    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED
-    HEREUNDER.
-
-Statement of Purpose
-
-The laws of most jurisdictions throughout the world automatically confer
-exclusive Copyright and Related Rights (defined below) upon the creator
-and subsequent owner(s) (each and all, an "owner") of an original work of
-authorship and/or a database (each, a "Work").
-
-Certain owners wish to permanently relinquish those rights to a Work for
-the purpose of contributing to a commons of creative, cultural and
-scientific works ("Commons") that the public can reliably and without fear
-of later claims of infringement build upon, modify, incorporate in other
-works, reuse and redistribute as freely as possible in any form whatsoever
-and for any purposes, including without limitation commercial purposes.
-These owners may contribute to the Commons to promote the ideal of a free
-culture and the further production of creative, cultural and scientific
-works, or to gain reputation or greater distribution for their Work in
-part through the use and efforts of others.
-
-For these and/or other purposes and motivations, and without any
-expectation of additional consideration or compensation, the person
-associating CC0 with a Work (the "Affirmer"), to the extent that he or she
-is an owner of Copyright and Related Rights in the Work, voluntarily
-elects to apply CC0 to the Work and publicly distribute the Work under its
-terms, with knowledge of his or her Copyright and Related Rights in the
-Work and the meaning and intended legal effect of CC0 on those rights.
-
-1. Copyright and Related Rights. A Work made available under CC0 may be
-protected by copyright and related or neighboring rights ("Copyright and
-Related Rights"). Copyright and Related Rights include, but are not
-limited to, the following:
-
-  i. the right to reproduce, adapt, distribute, perform, display,
-     communicate, and translate a Work;
- ii. moral rights retained by the original author(s) and/or performer(s);
-iii. publicity and privacy rights pertaining to a person's image or
-     likeness depicted in a Work;
- iv. rights protecting against unfair competition in regards to a Work,
-     subject to the limitations in paragraph 4(a), below;
-  v. rights protecting the extraction, dissemination, use and reuse of data
-     in a Work;
- vi. database rights (such as those arising under Directive 96/9/EC of the
-     European Parliament and of the Council of 11 March 1996 on the legal
-     protection of databases, and under any national implementation
-     thereof, including any amended or successor version of such
-     directive); and
-vii. other similar, equivalent or corresponding rights throughout the
-     world based on applicable law or treaty, and any national
-     implementations thereof.
-
-2. Waiver. To the greatest extent permitted by, but not in contravention
-of, applicable law, Affirmer hereby overtly, fully, permanently,
-irrevocably and unconditionally waives, abandons, and surrenders all of
-Affirmer's Copyright and Related Rights and associated claims and causes
-of action, whether now known or unknown (including existing as well as
-future claims and causes of action), in the Work (i) in all territories
-worldwide, (ii) for the maximum duration provided by applicable law or
-treaty (including future time extensions), (iii) in any current or future
-medium and for any number of copies, and (iv) for any purpose whatsoever,
-including without limitation commercial, advertising or promotional
-purposes (the "Waiver"). Affirmer makes the Waiver for the benefit of each
-member of the public at large and to the detriment of Affirmer's heirs and
-successors, fully intending that such Waiver shall not be subject to
-revocation, rescission, cancellation, termination, or any other legal or
-equitable action to disrupt the quiet enjoyment of the Work by the public
-as contemplated by Affirmer's express Statement of Purpose.
-
-3. Public License Fallback. Should any part of the Waiver for any reason
-be judged legally invalid or ineffective under applicable law, then the
-Waiver shall be preserved to the maximum extent permitted taking into
-account Affirmer's express Statement of Purpose. In addition, to the
-extent the Waiver is so judged Affirmer hereby grants to each affected
-person a royalty-free, non transferable, non sublicensable, non exclusive,
-irrevocable and unconditional license to exercise Affirmer's Copyright and
-Related Rights in the Work (i) in all territories worldwide, (ii) for the
-maximum duration provided by applicable law or treaty (including future
-time extensions), (iii) in any current or future medium and for any number
-of copies, and (iv) for any purpose whatsoever, including without
-limitation commercial, advertising or promotional purposes (the
-"License"). The License shall be deemed effective as of the date CC0 was
-applied by Affirmer to the Work. Should any part of the License for any
-reason be judged legally invalid or ineffective under applicable law, such
-partial invalidity or ineffectiveness shall not invalidate the remainder
-of the License, and in such case Affirmer hereby affirms that he or she
-will not (i) exercise any of his or her remaining Copyright and Related
-Rights in the Work or (ii) assert any associated claims and causes of
-action with respect to the Work, in either case contrary to Affirmer's
-express Statement of Purpose.
-
-4. Limitations and Disclaimers.
-
- a. No trademark or patent rights held by Affirmer are waived, abandoned,
-    surrendered, licensed or otherwise affected by this document.
- b. Affirmer offers the Work as-is and makes no representations or
-    warranties of any kind concerning the Work, express, implied,
-    statutory or otherwise, including without limitation warranties of
-    title, merchantability, fitness for a particular purpose, non
-    infringement, or the absence of latent or other defects, accuracy, or
-    the present or absence of errors, whether or not discoverable, all to
-    the greatest extent permissible under applicable law.
- c. Affirmer disclaims responsibility for clearing rights of other persons
-    that may apply to the Work or any use thereof, including without
-    limitation any person's Copyright and Related Rights in the Work.
-    Further, Affirmer disclaims responsibility for obtaining any necessary
-    consents, permissions or other rights required for any use of the
-    Work.
- d. Affirmer understands and acknowledges that Creative Commons is not a
-    party to this document and has no duty or obligation with respect to
-    this CC0 or use of the Work.
+    <script>
+        // 路线切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const routeBtns = document.querySelectorAll('.route-btn');
+            const routes = document.querySelectorAll('.route');
+            
+            routeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 更新按钮状态
+                    routeBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 获取路线ID
+                    const routeId = this.getAttribute('data-route');
+                    
+                    // 更新路线显示
+                    routes.forEach(route => {
+                        route.classList.remove('active');
+                        if (route.id === `${routeId}-route`) {
+                            route.classList.add('active');
+                            
+                            // 更新路线标题和信息
+                            updateRouteInfo(routeId);
+                        }
+                    });
+                });
+            });
+            
+            // 路线点标记交互
+            const markers = document.querySelectorAll('.route-marker');
+            markers.forEach(marker => {
+                marker.addEventListener('click', function() {
+                    markers.forEach(m => m.style.transform = 'translate(-50%, -50%)');
+                    this.style.transform = 'translate(-50%, -50%) scale(1.3)';
+                    
+                    // 实际应用中这里可以显示该点的详细信息
+                    const stopNum = this.getAttribute('data-stop');
+                    alert(`您选择了路线上的第 ${stopNum} 站，实际应用中这里会显示该美食点的详细信息。`);
+                });
+            });
+            
+            // 更新路线信息函数
+            function updateRouteInfo(routeId) {
+                const routeTitle = document.querySelector('.route-title');
+                const routeInfo = document.querySelector('.route-info p');
+                const routeStops = document.querySelector('.route-stops');
+                
+                switch(routeId) {
+                    case 'old-street':
+                        routeTitle.innerHTML = '<i class="fas fa-route"></i> 骑楼老街小吃路线';
+                        routeInfo.textContent = '这条路线带您穿越百年骑楼老街，品尝最地道的海口传统小吃，感受南洋风情与海南本土饮食文化的完美融合。';
+                        break;
+                    case 'seafood':
+                        routeTitle.innerHTML = '<i class="fas fa-route"></i> 疍家海鲜美食路线';
+                        routeInfo.textContent = '沿着海岸线探索疍家渔民的饮食文化，品尝最新鲜的海鲜料理，了解疍家人"以海为田"的饮食智慧。';
+                        break;
+                    case 'traditional':
+                        routeTitle.innerHTML = '<i class="fas fa-route"></i> 海南传统美食路线';
+                        routeInfo.textContent = '深入海口老城区，寻找最正宗的海南传统美食，体验海南饮食文化的精髓与传承。';
+                        break;
+                    case 'tea':
+                        routeTitle.innerHTML = '<i class="fas fa-route"></i> 老爸茶文化路线';
+                        routeInfo.textContent = '体验海口独特的"老爸茶"文化，走访几家最具代表性的茶店，感受海口人悠闲的生活节奏。';
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
